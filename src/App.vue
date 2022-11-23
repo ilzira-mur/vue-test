@@ -11,10 +11,12 @@
       <div class="flex">
         <div class="max-w-xs">
           <label for="wallet" class="block text-sm font-medium text-gray-700"
-            >Тикер</label
+            >Тикер </label
           >
           <div class="mt-1 relative rounded-md shadow-md">
             <input
+              v-model="ticker"
+              v-on:keydown.enter="add"
               type="text"
               name="wallet"
               id="wallet"
@@ -40,6 +42,7 @@
         </div>
       </div>
       <button
+        v-on:click="add"
         type="button"
         class="my-4 inline-flex items-center py-2 px-4 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
       >
@@ -233,7 +236,20 @@
 
 export default {
   name: 'App',
-}
+
+  data() {
+    return {
+      ticker: 'default',
+      tickers: ['1', '2', '3', '4']
+    };
+  },
+
+  methods: {
+    add(evt) {
+      alert(evt.key)
+    }
+  }
+};
 </script>
 
 <style src="./app.css"></style>
