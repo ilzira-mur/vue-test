@@ -69,6 +69,10 @@
         <div 
           v-for="t in tickers"
           :key="t.name"
+          @click="sel = t"
+          :class="{
+            'border-4': sel === t
+          }"
           class="bg-white overflow-hidden shadow rounded-lg border-purple-800 border-solid cursor-pointer"
         >
           <div class="px-4 py-5 sm:p-6 text-center">
@@ -81,7 +85,7 @@
           </div>
           <div class="w-full border-t border-gray-200"></div>
           <button
-            @click="handelDelete(t)"
+            @click.stop="handelDelete(t)"
             class="flex items-center justify-center font-medium w-full bg-gray-100 px-4 py-4 sm:px-6 text-md text-gray-500 hover:text-gray-600 hover:bg-gray-200 hover:opacity-20 transition-all focus:outline-none"
           >
             <svg
@@ -101,9 +105,9 @@
       </dl>
       <hr class="w-full border-t border-gray-600 my-4" />
     </template>
-    <section class="relative">
+    <section v-if="sel" class="relative">
       <h3 class="text-lg leading-6 font-medium text-gray-900 my-8">
-        VUE - USD
+        {{ sel.name }}- USD
       </h3>
       <div class="flex items-end border-gray-600 border-b border-l h-64">
         <div
@@ -120,6 +124,7 @@
         ></div>
       </div>
       <button
+        @click="sel = null"
         type="button"
         class="absolute top-0 right-0"
       >
@@ -157,12 +162,9 @@ export default {
 
   data() {
     return {
-      ticker: 'default',
-      tickers: [
-        { name: 'DEMO1', price: '1'},
-        { name: 'DEMO2', price: '2'},
-        { name: 'DEMO3', price: '3'}
-    ]
+      ticker: '',
+      tickers: [],
+    sel: null
     };
   },
 
@@ -174,6 +176,14 @@ export default {
       };
 
       this.tickers.push(newTicker);
+      setInterval(async () => {
+        const f = await fetch(
+          `https://min-api.cryptocompare.com/data/price?fsym=${newTicker.name}&tsyms=USD&api_key=2397550aa3fa4c7e480e4b9acf261bfbcdd926a9b7e1cf4a82f10bd7c6e4df44`
+          );
+          const data = await f.json();
+          this.tickers.find(t => t.name === newTicker.name).price = 
+            data.USD > 1 ? data.USD.toFixed(2) : data.USD.toPrecision(2);
+      }, 3000)
       this.ticker = "";
     },
 
