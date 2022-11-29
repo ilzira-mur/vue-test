@@ -25,16 +25,24 @@
             />
           </div>
           <div class="flex bg-white shadow-md p-1 rounded-md shadow-md flex-wrap">
-            <span class="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer">
+            <span 
+              @click="ticker = 'BTC'"
+              class="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer">
               BTC
             </span>
-            <span class="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer">
+            <span 
+              @click="ticker = 'DOGE'"
+              class="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer">
               DOGE
             </span>
-            <span class="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer">
+            <span
+              @click="ticker = 'BCH'"
+              class="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer">
               BCH
             </span>
-            <span class="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer">
+            <span
+              @click="ticker = 'CHD'"
+              class="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer">
               CHD
             </span>
           </div>
@@ -164,6 +172,10 @@ export default {
   },
 
   methods: {
+    choose(item) {
+      this.ticker = item;
+    },
+
     add() {
       const currentTicker = { 
         name: this.ticker,
