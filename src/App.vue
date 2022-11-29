@@ -63,6 +63,7 @@
       </button>
     </section>
 
+    <template v-if="tickers.length > 0">
       <hr class="w-full border-t border-gray-600 my-4" />
       <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
         <div 
@@ -80,6 +81,7 @@
           </div>
           <div class="w-full border-t border-gray-200"></div>
           <button
+            @click="handelDelete(t)"
             class="flex items-center justify-center font-medium w-full bg-gray-100 px-4 py-4 sm:px-6 text-md text-gray-500 hover:text-gray-600 hover:bg-gray-200 hover:opacity-20 transition-all focus:outline-none"
           >
             <svg
@@ -98,6 +100,7 @@
         </div>
       </dl>
       <hr class="w-full border-t border-gray-600 my-4" />
+    </template>
     <section class="relative">
       <h3 class="text-lg leading-6 font-medium text-gray-900 my-8">
         VUE - USD
@@ -164,8 +167,18 @@ export default {
   },
 
   methods: {
-    add(evt) {
-      alert(evt.key)
+    add() {
+      const newTicker = { 
+        name: this.ticker,
+        price: '-'
+      };
+
+      this.tickers.push(newTicker);
+      this.ticker = "";
+    },
+
+      handelDelete(tickerToRemove) {
+      this.tickers = this.tickers.filter( t => t !== tickerToRemove);
     }
   }
 };
