@@ -238,6 +238,7 @@ export default {
 
       handelDelete(tickerToRemove) {
       this.tickers = this.tickers.filter( t => t !== tickerToRemove);
+      localStorage.setItem('cryptonomicon-list', JSON.stringify(this.tickers));
     },
 
     normalizeGraph() {
