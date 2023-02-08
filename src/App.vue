@@ -75,9 +75,15 @@
       <hr class="w-full border-t border-gray-600 my-4" />
       <div>
         <button type="button"
-        class="my-4 mx-2 inline-flex items-center py-2 px-4 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Назад</button>
+        class="my-4 mx-2 inline-flex items-center py-2 px-4 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+        v-if="page > 1"
+        @click="page = page - 1"
+        >Назад</button>
         <button type="button"
-        class="my-4 inline-flex items-center py-2 px-4 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Вперед</button>
+        class="my-4 inline-flex items-center py-2 px-4 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+        @click="page = page + 1"
+        v-if="nextPage"
+        >Вперед</button>
       <div>Фильтр: 
         <input v-model="filter"></div>
       </div>
@@ -179,6 +185,7 @@ export default {
       graph: [],
       page: 1,
       filter: "",
+      nextPage: true,
     };
   },
 
@@ -194,9 +201,17 @@ export default {
 
   methods: {
      filteredList() {
-      return this.tickers.filter(ticker => ticker.name.includes(this.filter))
-     },
+      const start = (this.page - 1) * 6;
+      const end = this.page * 6;
+      console.log(this.page, 'page')
 
+      const filteredList = this.tickers.filter(ticker => 
+        ticker.name.includes(this.filter));
+
+        console.log(filteredList.length, end)
+        this.nextPage = filteredList.length > end;
+        return filteredList.slice(start, end)
+     },
 
     choose(item) {
       this.ticker = item;
@@ -247,6 +262,12 @@ export default {
       return this.graph.map(
         price => 5 + ((price - minValue) * 95) / (maxValue - minValue)
       );
+    }
+  },
+
+  watch: {
+    filter() {
+      this.page = 1;
     }
   }
 };
